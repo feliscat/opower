@@ -305,7 +305,7 @@ class Eversource(UtilityBase):
                 if not accounts:
                     raise InvalidAuth("No accounts found")
 
-                account_id = accounts[0].get("BillingAccountIdentifier")
+                account_id = accounts[1].get("BillingAccountIdentifier")
                 _LOGGER.debug("Got account ID: %s", account_id)
 
         except aiohttp.ClientError as err:
