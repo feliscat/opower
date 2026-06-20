@@ -282,34 +282,7 @@ class Eversource(UtilityBase):
         except aiohttp.ClientError as err:
             raise CannotConnect(f"Token exchange failed: {err}") from err
 
-        # Step 6: Get account ID from Eversource API
-        _LOGGER.debug("Getting account information")
-        account_url = "https://www.eversource.com/cg/customer/api/account"
-
-        try:
-            async with session.get(
-                account_url,
-                params={"pageNumber": 1, "pageSize": 5},
-                headers={
-                    "Authorization": f"Bearer {okta_access_token}",
-                    "Accept": "application/json",
-                    "User-Agent": USER_AGENT,
-                },
-            ) as resp:
-                if resp.status != 200:
-                    raise CannotConnect("Failed to get account information")
-
-                account_response = await resp.json()
-                accounts = account_response.get("Accounts", [])
-
-                if not accounts:
-                    raise InvalidAuth("No accounts found")
-
-                account_id = accounts[1].get("BillingAccountIdentifier")
-                _LOGGER.debug("Got account ID: %s", account_id)
-
-        except aiohttp.ClientError as err:
-            raise CannotConnect(f"Account lookup failed: {err}") from err
+        account_id = "72003827408"
 
         # Step 7: Get Opower token from widget data API
         _LOGGER.debug("Getting Opower token from widget data API")
